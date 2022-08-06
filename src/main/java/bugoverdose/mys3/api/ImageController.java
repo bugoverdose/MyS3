@@ -1,6 +1,7 @@
 package bugoverdose.mys3.api;
 
 import bugoverdose.mys3.service.ImageService;
+import bugoverdose.mys3.service.dto.UploadImageCommand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +25,7 @@ public class ImageController {
     public ResponseEntity<Void> saveImage(@PathVariable String uploadPath,
                                           @RequestParam(defaultValue = "") String fileName,
                                           @ModelAttribute MultipartFile image) {
-        imageService.upload(uploadPath, fileName, image);
+        imageService.upload(new UploadImageCommand(uploadPath, fileName, image));
         return ResponseEntity.ok().build();
     }
 }

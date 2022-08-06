@@ -1,5 +1,6 @@
 package bugoverdose.mys3.service;
 
+import bugoverdose.mys3.service.dto.UploadImageCommand;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,12 +13,12 @@ public class ImageService {
 
     private static final String FILENAME_FORMAT = "static/images/%s/%s";
 
-    public void upload(String uploadPath, String fileName, MultipartFile uploadedImageFile) {
+    public void upload(UploadImageCommand command) {
+        String uploadPath = command.getUploadPath();
+        String fileName = command.getFileName();
+        MultipartFile uploadedImageFile = command.getUploadedImageFile();
         try {
             BufferedImage uploadedImage = ImageIO.read(uploadedImageFile.getInputStream());
-            if (fileName.isBlank()) {
-                fileName = uploadedImageFile.getOriginalFilename();
-            }
             File outputFile = new File(String.format(FILENAME_FORMAT, uploadPath, fileName));
             createParentDirectoryIfNew(outputFile);
             ImageIO.write(uploadedImage, "png", outputFile);
@@ -28,7 +29,7 @@ public class ImageService {
 
     private void createParentDirectoryIfNew(File file) {
         File parentFile = file.getParentFile();
-        if (!parentFile.exists()){
+        if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
     }
