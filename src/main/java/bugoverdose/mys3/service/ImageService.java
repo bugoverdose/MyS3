@@ -15,6 +15,9 @@ public class ImageService {
     public void upload(String uploadPath, String fileName, MultipartFile uploadedImageFile) {
         try {
             BufferedImage uploadedImage = ImageIO.read(uploadedImageFile.getInputStream());
+            if (fileName.isBlank()) {
+                fileName = uploadedImageFile.getOriginalFilename();
+            }
             File outputFile = new File(String.format(FILENAME_FORMAT, uploadPath, fileName));
             createParentDirectoryIfNew(outputFile);
             ImageIO.write(uploadedImage, "png", outputFile);

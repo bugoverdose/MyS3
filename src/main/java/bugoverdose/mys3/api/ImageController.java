@@ -22,7 +22,7 @@ public class ImageController {
 
     @PostMapping("/images/{uploadPath}")
     public ResponseEntity<Void> saveImage(@PathVariable String uploadPath,
-                                          @RequestParam String fileName,
+                                          @RequestParam(defaultValue = "") String fileName,
                                           @ModelAttribute MultipartFile image) {
         imageService.upload(uploadPath, fileName, image);
         return ResponseEntity.ok().build();
