@@ -1,8 +1,8 @@
-package bugoverdose.mys3.image;
+package bugoverdose.mys3.service;
 
 import bugoverdose.mys3.exception.InternalServerError;
 import bugoverdose.mys3.exception.NotFoundException;
-import bugoverdose.mys3.image.dto.UploadImageCommand;
+import bugoverdose.mys3.service.dto.UploadImageCommand;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;

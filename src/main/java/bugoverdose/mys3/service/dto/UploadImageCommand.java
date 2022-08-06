@@ -1,4 +1,4 @@
-package bugoverdose.mys3.image.dto;
+package bugoverdose.mys3.service.dto;
 
 import bugoverdose.mys3.exception.InvalidRequestException;
 import lombok.Getter;

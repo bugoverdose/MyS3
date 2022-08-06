@@ -1,4 +1,4 @@
-package bugoverdose.mys3.auth;
+package bugoverdose.mys3.service;
 
 import bugoverdose.mys3.exception.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Value;

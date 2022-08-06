@@ -1,8 +1,9 @@
-package bugoverdose.mys3.image;
+package bugoverdose.mys3.api;
 
-import bugoverdose.mys3.auth.AuthService;
-import bugoverdose.mys3.image.dto.UploadImageCommand;
-import bugoverdose.mys3.image.dto.UploadImageResponse;
+import bugoverdose.mys3.service.AuthService;
+import bugoverdose.mys3.service.dto.UploadImageCommand;
+import bugoverdose.mys3.api.dto.UploadImageResponse;
+import bugoverdose.mys3.service.ImageService;
 import java.io.InputStream;
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
