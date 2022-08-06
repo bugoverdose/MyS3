@@ -1,9 +1,11 @@
 package bugoverdose.mys3.image;
 
+import bugoverdose.mys3.auth.AuthService;
 import bugoverdose.mys3.image.dto.UploadImageCommand;
 import bugoverdose.mys3.image.dto.UploadImageResponse;
 import java.io.InputStream;
 import java.net.URI;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +22,23 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api")
 public class ImageController {
 
-    private final ImageService imageService;
+    private static final String AUTHORIZATION = "Authorization";
 
-    public ImageController(ImageService imageService) {
+    private final ImageService imageService;
+    private final AuthService authService;
+
+    public ImageController(ImageService imageService,
+                           AuthService authService) {
         this.imageService = imageService;
+        this.authService = authService;
     }
 
     @PostMapping("/images/{uploadPath}")
     public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
                                                            @RequestParam(defaultValue = "") String fileName,
-                                                           @ModelAttribute MultipartFile image) {
+                                                           @ModelAttribute MultipartFile image,
+                                                           HttpServletRequest request) {
+        authService.validate(request.getHeader(AUTHORIZATION));
         String imagePath = imageService.saveOrUpdate(new UploadImageCommand(uploadPath, fileName, image));
         return ResponseEntity.created(URI.create("/api/images/" + imagePath))
                 .body(new UploadImageResponse(imagePath));
