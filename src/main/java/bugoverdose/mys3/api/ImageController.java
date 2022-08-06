@@ -1,0 +1,28 @@
+package bugoverdose.mys3.api;
+
+import bugoverdose.mys3.service.ImageService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+
+@Controller
+@RequestMapping("/api")
+public class ImageController {
+
+    private final ImageService imageService;
+
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
+    }
+
+    @PostMapping("/images/{uploadPath}")
+    public ResponseEntity<Void> saveImage(@PathVariable String uploadPath,
+                                          @ModelAttribute MultipartFile image) {
+        imageService.upload(uploadPath, image);
+        return ResponseEntity.ok().build();
+    }
+}
