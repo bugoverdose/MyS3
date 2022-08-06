@@ -1,20 +1,22 @@
 package bugoverdose.mys3.image;
 
 import bugoverdose.mys3.image.dto.UploadImageCommand;
+import bugoverdose.mys3.image.dto.UploadImageResponse;
 import java.io.InputStream;
+import java.net.URI;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class ImageController {
 
@@ -25,11 +27,12 @@ public class ImageController {
     }
 
     @PostMapping("/images/{uploadPath}")
-    public ResponseEntity<Void> uploadImage(@PathVariable String uploadPath,
-                                            @RequestParam(defaultValue = "") String fileName,
-                                            @ModelAttribute MultipartFile image) {
-        imageService.saveOrUpdate(new UploadImageCommand(uploadPath, fileName, image));
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
+                                                           @RequestParam(defaultValue = "") String fileName,
+                                                           @ModelAttribute MultipartFile image) {
+        String imagePath = imageService.saveOrUpdate(new UploadImageCommand(uploadPath, fileName, image));
+        return ResponseEntity.created(URI.create("/api/images/" + imagePath))
+                .body(new UploadImageResponse(imagePath));
     }
 
     @GetMapping("/images/{uploadPath}/{fileName}")

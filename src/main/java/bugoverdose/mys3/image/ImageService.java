@@ -18,30 +18,31 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ImageService {
 
-    private final String filePathFormat;
+    private final String filePathFullFormat;
 
     public ImageService(@Value("${image.storage.root-directory}") String storageDirectory) {
         String rootDirectory = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath();
-        this.filePathFormat = rootDirectory + "/" + storageDirectory + "/%s/%s.png";
+        this.filePathFullFormat = rootDirectory + "/" + storageDirectory + "/%s/%s.png";
     }
 
     public InputStream find(String uploadPath, String fileName) {
         try {
-            return new FileInputStream(String.format(filePathFormat, uploadPath, fileName));
+            return new FileInputStream(String.format(filePathFullFormat, uploadPath, fileName));
         } catch (FileNotFoundException e) {
             throw new NotFoundException("존재하지 않는 이미지입니다.");
         }
     }
 
-    public void saveOrUpdate(UploadImageCommand command) {
+    public String saveOrUpdate(UploadImageCommand command) {
         MultipartFile uploadedImageFile = command.getUploadedImageFile();
         String uploadPath = command.getUploadPath();
         String fileName = command.getFileName();
         try {
             BufferedImage uploadedImage = ImageIO.read(uploadedImageFile.getInputStream());
-            File outputFile = new File(String.format(filePathFormat, uploadPath, fileName));
+            File outputFile = new File(String.format(filePathFullFormat, uploadPath, fileName));
             createParentDirectoryIfNew(outputFile);
             ImageIO.write(uploadedImage, "png", outputFile);
+            return uploadPath + "/" + fileName;
         } catch (IOException e) {
             throw new InternalServerError("이미지 업로드에 실패히였습니다.");
         }
