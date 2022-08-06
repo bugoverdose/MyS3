@@ -1,4 +1,4 @@
-package bugoverdose.mys3.config;
+package bugoverdose.mys3.common;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;

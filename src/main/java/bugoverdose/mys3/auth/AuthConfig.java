@@ -1,7 +1,5 @@
-package bugoverdose.mys3.config;
+package bugoverdose.mys3.auth;
 
-import bugoverdose.mys3.api.AuthInterceptor;
-import bugoverdose.mys3.service.AuthService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

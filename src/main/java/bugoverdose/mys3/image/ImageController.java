@@ -1,7 +1,6 @@
-package bugoverdose.mys3.api;
+package bugoverdose.mys3.image;
 
-import bugoverdose.mys3.service.ImageService;
-import bugoverdose.mys3.service.dto.UploadImageCommand;
+import bugoverdose.mys3.image.dto.UploadImageCommand;
 import java.io.InputStream;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;

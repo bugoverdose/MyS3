@@ -1,7 +1,6 @@
-package bugoverdose.mys3.api;
+package bugoverdose.mys3.auth;
 
 import bugoverdose.mys3.exception.UnauthenticatedException;
-import bugoverdose.mys3.service.AuthService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpMethod;

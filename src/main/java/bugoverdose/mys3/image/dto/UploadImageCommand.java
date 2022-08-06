@@ -1,4 +1,4 @@
-package bugoverdose.mys3.service.dto;
+package bugoverdose.mys3.image.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
