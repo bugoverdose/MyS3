@@ -25,16 +25,16 @@ public class ImageController {
     }
 
     @PostMapping("/images/{uploadPath}")
-    public ResponseEntity<Void> saveImage(@PathVariable String uploadPath,
-                                          @RequestParam(defaultValue = "") String fileName,
-                                          @ModelAttribute MultipartFile image) {
-        imageService.upload(new UploadImageCommand(uploadPath, fileName, image));
+    public ResponseEntity<Void> uploadImage(@PathVariable String uploadPath,
+                                            @RequestParam(defaultValue = "") String fileName,
+                                            @ModelAttribute MultipartFile image) {
+        imageService.saveOrUpdate(new UploadImageCommand(uploadPath, fileName, image));
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/images/{uploadPath}/{fileName}")
-    public ResponseEntity<InputStreamResource> saveImage(@PathVariable String uploadPath,
-                                                         @PathVariable String fileName) {
+    public ResponseEntity<InputStreamResource> getImage(@PathVariable String uploadPath,
+                                                        @PathVariable String fileName) {
         InputStream imageInputStream = imageService.find(uploadPath, fileName);
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)

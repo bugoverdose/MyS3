@@ -33,7 +33,7 @@ public class ImageService {
         }
     }
 
-    public void upload(UploadImageCommand command) {
+    public void saveOrUpdate(UploadImageCommand command) {
         MultipartFile uploadedImageFile = command.getUploadedImageFile();
         String uploadPath = command.getUploadPath();
         String fileName = command.getFileName();
