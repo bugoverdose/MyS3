@@ -12,10 +12,9 @@ public class ImageService {
 
     private static final String FILENAME_FORMAT = "static/images/%s/%s";
 
-    public void upload(String uploadPath, MultipartFile uploadedImageFile) {
+    public void upload(String uploadPath, String fileName, MultipartFile uploadedImageFile) {
         try {
             BufferedImage uploadedImage = ImageIO.read(uploadedImageFile.getInputStream());
-            String fileName = uploadedImageFile.getOriginalFilename();
             File outputFile = new File(String.format(FILENAME_FORMAT, uploadPath, fileName));
             createParentDirectoryIfNew(outputFile);
             ImageIO.write(uploadedImage, "png", outputFile);
