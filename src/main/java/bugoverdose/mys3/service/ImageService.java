@@ -1,5 +1,7 @@
 package bugoverdose.mys3.service;
 
+import bugoverdose.mys3.exception.InternalServerError;
+import bugoverdose.mys3.exception.NotFoundException;
 import bugoverdose.mys3.service.dto.UploadImageCommand;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -27,8 +29,7 @@ public class ImageService {
         try {
             return new FileInputStream(String.format(filePathFormat, uploadPath, fileName));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("404 Not Found!");
+            throw new NotFoundException("존재하지 않는 이미지입니다.");
         }
     }
 
@@ -42,7 +43,7 @@ public class ImageService {
             createParentDirectoryIfNew(outputFile);
             ImageIO.write(uploadedImage, "png", outputFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InternalServerError("이미지 업로드에 실패히였습니다.");
         }
     }
 
