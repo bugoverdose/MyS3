@@ -1,2 +1,11 @@
 image.storage:
   root-directory: static/images
+security:
+  authorization-key: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+---
+
+spring:
+  config.activate.on-profile: prod
+security:
+  authorization-key: ${SECRET_KEY}
