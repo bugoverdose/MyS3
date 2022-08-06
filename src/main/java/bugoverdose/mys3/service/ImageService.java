@@ -3,7 +3,10 @@ package bugoverdose.mys3.service;
 import bugoverdose.mys3.service.dto.UploadImageCommand;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileSystemView;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +21,15 @@ public class ImageService {
     public ImageService(@Value("${image.storage.root-directory}") String storageDirectory) {
         String rootDirectory = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath();
         this.filePathFormat = rootDirectory + "/" + storageDirectory + "/%s/%s.png";
+    }
+
+    public InputStream find(String uploadPath, String fileName) {
+        try {
+            return new FileInputStream(String.format(filePathFormat, uploadPath, fileName));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("404 Not Found!");
+        }
     }
 
     public void upload(UploadImageCommand command) {
