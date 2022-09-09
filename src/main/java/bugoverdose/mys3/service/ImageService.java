@@ -1,5 +1,7 @@
 package bugoverdose.mys3.service;
 
+import static bugoverdose.mys3.common.StringFormatUtils.toCombinedPath;
+
 import bugoverdose.mys3.exception.InternalServerError;
 import bugoverdose.mys3.exception.NotFoundException;
 import bugoverdose.mys3.service.dto.UploadImageRequestDto;
@@ -22,27 +24,26 @@ public class ImageService {
 
     public ImageService(@Value("${image.storage.root-directory}") String storageDirectory) {
         String rootDirectory = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath();
-        this.filePathFullFormat = rootDirectory + "/" + storageDirectory + "/%s/%s.webp";
+        this.filePathFullFormat = toCombinedPath(rootDirectory, storageDirectory, "%s.webp");
     }
 
-    public InputStream find(String uploadPath, String fileName) {
+    public InputStream find(String filePath) {
         try {
-            return new FileInputStream(String.format(filePathFullFormat, uploadPath, fileName));
+            return new FileInputStream(String.format(filePathFullFormat, filePath));
         } catch (FileNotFoundException e) {
             throw new NotFoundException("존재하지 않는 이미지입니다.");
         }
     }
 
     public String saveOrUpdate(UploadImageRequestDto requestDto) {
-        MultipartFile uploadedImageFile = requestDto.getUploadedImageFile();
-        String uploadPath = requestDto.getUploadPath();
-        String fileName = requestDto.getFileName();
+        MultipartFile imageFile = requestDto.getImageFile();
+        String filePath = requestDto.getFilePath();
         try {
-            BufferedImage uploadedImage = ImageIO.read(uploadedImageFile.getInputStream());
-            File outputFile = new File(String.format(filePathFullFormat, uploadPath, fileName));
+            BufferedImage uploadedImage = ImageIO.read(imageFile.getInputStream());
+            File outputFile = new File(String.format(filePathFullFormat, filePath));
             createParentDirectoryIfNew(outputFile);
             ImageIO.write(uploadedImage, "webp", outputFile);
-            return uploadPath + "/" + fileName;
+            return filePath;
         } catch (IOException e) {
             throw new InternalServerError("이미지 업로드에 실패히였습니다.");
         }

@@ -1,5 +1,6 @@
 package bugoverdose.mys3.api;
 
+import static bugoverdose.mys3.common.StringFormatUtils.toCombinedPath;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 import bugoverdose.mys3.api.dto.UploadImageResponse;
@@ -38,10 +39,10 @@ public class ImageController {
     @PostMapping("/images/{uploadPath}")
     public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
                                                            @RequestParam(defaultValue = "") String fileName,
-                                                           @ModelAttribute MultipartFile image,
+                                                           @ModelAttribute MultipartFile imageFile,
                                                            HttpServletRequest request) {
         authService.validate(request.getHeader(AUTHORIZATION));
-        String imagePath = imageService.saveOrUpdate(new UploadImageRequestDto(uploadPath, fileName, image));
+        String imagePath = imageService.saveOrUpdate(new UploadImageRequestDto(uploadPath, fileName, imageFile));
         return ResponseEntity.created(URI.create("/api/images/" + imagePath))
                 .body(new UploadImageResponse(imagePath));
     }
@@ -49,7 +50,7 @@ public class ImageController {
     @GetMapping("/images/{uploadPath}/{fileName}")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable String uploadPath,
                                                         @PathVariable String fileName) {
-        InputStream imageInputStream = imageService.find(uploadPath, fileName);
+        InputStream imageInputStream = imageService.find(toCombinedPath(uploadPath, fileName));
         return ResponseEntity.ok()
                 .header(CONTENT_TYPE, "image/webp")
                 .body(new InputStreamResource(imageInputStream));
