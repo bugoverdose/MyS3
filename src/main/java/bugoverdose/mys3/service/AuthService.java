@@ -15,10 +15,10 @@ public class AuthService {
 
     public void validate(String authorizationCode) {
         if (authorizationCode == null) {
-            throw new UnauthenticatedException("인증 코드 정보가 누락되었습니다.");
+            throw UnauthenticatedException.ofMissingAuthCode();
         }
         if (!this.authorizationCode.equals(authorizationCode)) {
-            throw new UnauthenticatedException("잘못된 인증 정보입니다.");
+            throw UnauthenticatedException.ofInvalidAuthCode();
         }
     }
 }

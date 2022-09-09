@@ -5,4 +5,8 @@ public class InternalServerError extends RuntimeException {
     public InternalServerError(String message) {
         super(message);
     }
+
+    public static InternalServerError ofFileSaveFailure() {
+        return new InternalServerError("이미지 업로드에 실패히였습니다.");
+    }
 }

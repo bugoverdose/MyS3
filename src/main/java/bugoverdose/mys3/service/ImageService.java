@@ -32,7 +32,7 @@ public class ImageService {
         try {
             return new FileInputStream(String.format(filePathFullFormat, filePath));
         } catch (FileNotFoundException e) {
-            throw new NotFoundException("존재하지 않는 이미지입니다.");
+            throw NotFoundException.ofImage();
         }
     }
 
@@ -46,7 +46,7 @@ public class ImageService {
             ImageIO.write(uploadedImage, WebpConstants.EXTENSION, outputFile);
             return filePath;
         } catch (IOException e) {
-            throw new InternalServerError("이미지 업로드에 실패히였습니다.");
+            throw InternalServerError.ofFileSaveFailure();
         }
     }
 

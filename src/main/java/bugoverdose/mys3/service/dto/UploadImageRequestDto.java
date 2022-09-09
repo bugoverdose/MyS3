@@ -21,11 +21,11 @@ public class UploadImageRequestDto {
 
     private void validateImageFile(MultipartFile uploadedImageFile) {
         if (uploadedImageFile == null || uploadedImageFile.isEmpty()) {
-            throw new InvalidRequestException("업로드할 파일이 존재하지 않습니다.");
+            throw InvalidRequestException.ofFileMissing();
         }
         String contentType = uploadedImageFile.getContentType();
         if (contentType == null || !contentType.startsWith("image")) {
-            throw new InvalidRequestException("이미지 파일만 업로드 가능합니다.");
+            throw InvalidRequestException.ofNonImageType();
         }
     }
 
