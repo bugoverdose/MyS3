@@ -12,6 +12,9 @@ image.storage:
 security:
   authorization-key: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
+cache:
+  max-age: 600 # 최대 값: 31536000 (1년)
+
 ---
 
 spring:
