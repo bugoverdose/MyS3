@@ -56,4 +56,12 @@ public class ImageService {
             parentFile.mkdirs();
         }
     }
+
+    public void delete(String filePath) {
+        File targetFile = new File(String.format(filePathFullFormat, filePath));
+        if (!targetFile.exists() || targetFile.isDirectory()) {
+            throw NotFoundException.ofImage();
+        }
+        targetFile.delete();
+    }
 }

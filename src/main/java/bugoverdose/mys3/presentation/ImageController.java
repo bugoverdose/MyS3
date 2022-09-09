@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.net.URI;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,9 +41,16 @@ public class ImageController {
     @PostMapping("/api/images/{uploadPath}")
     public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
                                                            @RequestParam(defaultValue = "") String fileName,
-                                                           @ModelAttribute MultipartFile imageFile) {
-        String imagePath = imageService.saveOrUpdate(new UploadImageRequest(uploadPath, fileName, imageFile));
+                                                           @ModelAttribute MultipartFile image) {
+        String imagePath = imageService.saveOrUpdate(new UploadImageRequest(uploadPath, fileName, image));
         return ResponseEntity.created(URI.create("/images/" + imagePath))
                 .body(new UploadImageResponse(imagePath));
+    }
+
+    @DeleteMapping("/api/images/{uploadPath}/{fileName}")
+    public ResponseEntity<UploadImageResponse> deleteImage(@PathVariable String uploadPath,
+                                                           @PathVariable String fileName) {
+        imageService.delete(toCombinedPath(uploadPath, fileName));
+        return ResponseEntity.noContent().build();
     }
 }
