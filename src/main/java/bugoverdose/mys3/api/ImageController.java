@@ -36,17 +36,6 @@ public class ImageController {
         this.authService = authService;
     }
 
-    @PostMapping("/images/{uploadPath}")
-    public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
-                                                           @RequestParam(defaultValue = "") String fileName,
-                                                           @ModelAttribute MultipartFile imageFile,
-                                                           HttpServletRequest request) {
-        authService.validate(request.getHeader(AUTHORIZATION));
-        String imagePath = imageService.saveOrUpdate(new UploadImageRequestDto(uploadPath, fileName, imageFile));
-        return ResponseEntity.created(URI.create("/api/images/" + imagePath))
-                .body(new UploadImageResponse(imagePath));
-    }
-
     @GetMapping("/images/{uploadPath}/{fileName}")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable String uploadPath,
                                                         @PathVariable String fileName) {
@@ -54,5 +43,16 @@ public class ImageController {
         return ResponseEntity.ok()
                 .header(CONTENT_TYPE, "image/webp")
                 .body(new InputStreamResource(imageInputStream));
+    }
+
+    @PostMapping("/api/images/{uploadPath}")
+    public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
+                                                           @RequestParam(defaultValue = "") String fileName,
+                                                           @ModelAttribute MultipartFile imageFile,
+                                                           HttpServletRequest request) {
+        authService.validate(request.getHeader(AUTHORIZATION));
+        String imagePath = imageService.saveOrUpdate(new UploadImageRequestDto(uploadPath, fileName, imageFile));
+        return ResponseEntity.created(URI.create("/images/" + imagePath))
+                .body(new UploadImageResponse(imagePath));
     }
 }
