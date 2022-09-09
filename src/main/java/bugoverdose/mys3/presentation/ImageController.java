@@ -7,9 +7,8 @@ import bugoverdose.mys3.common.WebpConstants;
 import bugoverdose.mys3.presentation.dto.UploadImageResponse;
 import bugoverdose.mys3.service.ImageService;
 import bugoverdose.mys3.service.dto.UploadImageRequest;
-import java.io.InputStream;
 import java.net.URI;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,21 +29,22 @@ public class ImageController {
     }
 
     @GetMapping("/images/{uploadPath}/{fileName}")
-    public ResponseEntity<InputStreamResource> getImage(@PathVariable String uploadPath,
-                                                        @PathVariable String fileName) {
-        InputStream imageInputStream = imageService.find(toCombinedPath(uploadPath, fileName));
+    public ResponseEntity<FileSystemResource> getImage(@PathVariable String uploadPath,
+                                                       @PathVariable String fileName) {
+        final var file = imageService.find(toCombinedPath(uploadPath, fileName));
         return ResponseEntity.ok()
                 .header(CONTENT_TYPE, WebpConstants.MEDIA_TYPE)
-                .body(new InputStreamResource(imageInputStream));
+                .body(new FileSystemResource(file));
     }
 
     @PostMapping("/api/images/{uploadPath}")
     public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
                                                            @RequestParam(defaultValue = "") String fileName,
                                                            @ModelAttribute MultipartFile image) {
-        String imagePath = imageService.saveOrUpdate(new UploadImageRequest(uploadPath, fileName, image));
-        return ResponseEntity.created(URI.create("/images/" + imagePath))
-                .body(new UploadImageResponse(imagePath));
+        final var imagePath = imageService.saveOrUpdate(new UploadImageRequest(uploadPath, fileName, image));
+        final var location = URI.create("/images/" + imagePath);
+        final var body = new UploadImageResponse(imagePath);
+        return ResponseEntity.created(location).body(body);
     }
 
     @DeleteMapping("/api/images/{uploadPath}/{fileName}")
