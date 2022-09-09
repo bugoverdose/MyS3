@@ -40,8 +40,9 @@ public class ImageController {
     @PostMapping("/api/images/{uploadPath}")
     public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
                                                            @RequestParam(defaultValue = "") String fileName,
+                                                           @RequestParam(defaultValue = "") String version,
                                                            @ModelAttribute MultipartFile image) {
-        final var imagePath = imageService.saveOrUpdate(new UploadImageRequest(uploadPath, fileName, image));
+        final var imagePath = imageService.saveOrUpdate(new UploadImageRequest(uploadPath, fileName, version, image));
         final var location = URI.create("/images/" + imagePath);
         final var body = new UploadImageResponse(imagePath);
         return ResponseEntity.created(location).body(body);

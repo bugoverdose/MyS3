@@ -11,9 +11,9 @@ public class UploadImageRequest {
     private final String filePath;
     private final MultipartFile imageFile;
 
-    public UploadImageRequest(String uploadPath, String fileName, MultipartFile imageFile) {
+    public UploadImageRequest(String uploadPath, String fileName, String version, MultipartFile imageFile) {
         validateImageFile(imageFile);
-        fileName = toValidFileName(fileName, imageFile);
+        fileName = toValidFileName(fileName, version, imageFile);
         this.filePath = StringFormatUtils.toCombinedPath(uploadPath, fileName);
         this.imageFile = imageFile;
     }
@@ -28,10 +28,23 @@ public class UploadImageRequest {
         }
     }
 
-    private String toValidFileName(String fileName, MultipartFile imageFile) {
+    private String toValidFileName(String fileName, String version, MultipartFile imageFile) {
+        fileName = toDefaultFileName(fileName, imageFile);
+        fileName = StringFormatUtils.removeFileExtension(fileName);
+        return addVersionSuffix(fileName, version);
+    }
+
+    private String toDefaultFileName(String fileName, MultipartFile imageFile) {
         if (fileName.isBlank()) {
             fileName = imageFile.getOriginalFilename();
         }
-        return StringFormatUtils.removeFileExtension(fileName);
+        return fileName;
+    }
+
+    private String addVersionSuffix(String fileName, String version) {
+        if (version.isBlank()) {
+            return fileName;
+        }
+        return String.format("%s-%s", fileName, version);
     }
 }
