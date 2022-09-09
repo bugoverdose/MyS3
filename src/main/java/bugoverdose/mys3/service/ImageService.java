@@ -22,7 +22,7 @@ public class ImageService {
 
     public ImageService(@Value("${image.storage.root-directory}") String storageDirectory) {
         String rootDirectory = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath();
-        this.filePathFullFormat = rootDirectory + "/" + storageDirectory + "/%s/%s.png";
+        this.filePathFullFormat = rootDirectory + "/" + storageDirectory + "/%s/%s.webp";
     }
 
     public InputStream find(String uploadPath, String fileName) {
@@ -41,7 +41,7 @@ public class ImageService {
             BufferedImage uploadedImage = ImageIO.read(uploadedImageFile.getInputStream());
             File outputFile = new File(String.format(filePathFullFormat, uploadPath, fileName));
             createParentDirectoryIfNew(outputFile);
-            ImageIO.write(uploadedImage, "png", outputFile);
+            ImageIO.write(uploadedImage, "webp", outputFile);
             return uploadPath + "/" + fileName;
         } catch (IOException e) {
             throw new InternalServerError("이미지 업로드에 실패히였습니다.");

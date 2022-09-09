@@ -1,14 +1,15 @@
 package bugoverdose.mys3.api;
 
-import bugoverdose.mys3.service.AuthService;
-import bugoverdose.mys3.service.dto.UploadImageCommand;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+
 import bugoverdose.mys3.api.dto.UploadImageResponse;
+import bugoverdose.mys3.service.AuthService;
 import bugoverdose.mys3.service.ImageService;
+import bugoverdose.mys3.service.dto.UploadImageCommand;
 import java.io.InputStream;
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,7 +51,7 @@ public class ImageController {
                                                         @PathVariable String fileName) {
         InputStream imageInputStream = imageService.find(uploadPath, fileName);
         return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG)
+                .header(CONTENT_TYPE, "image/webp")
                 .body(new InputStreamResource(imageInputStream));
     }
 }
