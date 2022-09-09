@@ -2,6 +2,7 @@ package bugoverdose.mys3.service;
 
 import static bugoverdose.mys3.common.StringFormatUtils.toCombinedPath;
 
+import bugoverdose.mys3.common.WebpConstants;
 import bugoverdose.mys3.exception.InternalServerError;
 import bugoverdose.mys3.exception.NotFoundException;
 import bugoverdose.mys3.service.dto.UploadImageRequestDto;
@@ -24,7 +25,7 @@ public class ImageService {
 
     public ImageService(@Value("${image.storage.root-directory}") String storageDirectory) {
         String rootDirectory = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath();
-        this.filePathFullFormat = toCombinedPath(rootDirectory, storageDirectory, "%s.webp");
+        this.filePathFullFormat = toCombinedPath(rootDirectory, storageDirectory, WebpConstants.FILE_FORMAT);
     }
 
     public InputStream find(String filePath) {
@@ -42,7 +43,7 @@ public class ImageService {
             BufferedImage uploadedImage = ImageIO.read(imageFile.getInputStream());
             File outputFile = new File(String.format(filePathFullFormat, filePath));
             createParentDirectoryIfNew(outputFile);
-            ImageIO.write(uploadedImage, "webp", outputFile);
+            ImageIO.write(uploadedImage, WebpConstants.EXTENSION, outputFile);
             return filePath;
         } catch (IOException e) {
             throw new InternalServerError("이미지 업로드에 실패히였습니다.");

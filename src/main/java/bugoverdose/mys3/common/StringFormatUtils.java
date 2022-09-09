@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 public class StringFormatUtils {
 
+    private StringFormatUtils() {
+    }
+
     public static String toCombinedPath(String... uris) {
         return Arrays.stream(uris)
                 .map(String::strip)

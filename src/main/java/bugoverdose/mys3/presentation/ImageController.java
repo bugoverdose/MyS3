@@ -3,6 +3,7 @@ package bugoverdose.mys3.presentation;
 import static bugoverdose.mys3.common.StringFormatUtils.toCombinedPath;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
+import bugoverdose.mys3.common.WebpConstants;
 import bugoverdose.mys3.presentation.dto.UploadImageResponse;
 import bugoverdose.mys3.service.AuthService;
 import bugoverdose.mys3.service.ImageService;
@@ -41,7 +42,7 @@ public class ImageController {
                                                         @PathVariable String fileName) {
         InputStream imageInputStream = imageService.find(toCombinedPath(uploadPath, fileName));
         return ResponseEntity.ok()
-                .header(CONTENT_TYPE, "image/webp")
+                .header(CONTENT_TYPE, WebpConstants.MEDIA_TYPE)
                 .body(new InputStreamResource(imageInputStream));
     }
 
