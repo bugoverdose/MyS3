@@ -7,12 +7,12 @@ import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-public class UploadImageRequestDto {
+public class UploadImageRequest {
 
     private final String filePath;
     private final MultipartFile imageFile;
 
-    public UploadImageRequestDto(String uploadPath, String fileName, MultipartFile imageFile) {
+    public UploadImageRequest(String uploadPath, String fileName, MultipartFile imageFile) {
         validateImageFile(imageFile);
         fileName = toValidFileName(fileName, imageFile);
         this.filePath = toCombinedPath(uploadPath, fileName);

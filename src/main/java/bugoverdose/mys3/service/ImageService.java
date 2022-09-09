@@ -5,7 +5,7 @@ import static bugoverdose.mys3.common.StringFormatUtils.toCombinedPath;
 import bugoverdose.mys3.common.WebpConstants;
 import bugoverdose.mys3.exception.InternalServerError;
 import bugoverdose.mys3.exception.NotFoundException;
-import bugoverdose.mys3.service.dto.UploadImageRequestDto;
+import bugoverdose.mys3.service.dto.UploadImageRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,9 +36,9 @@ public class ImageService {
         }
     }
 
-    public String saveOrUpdate(UploadImageRequestDto requestDto) {
-        MultipartFile imageFile = requestDto.getImageFile();
-        String filePath = requestDto.getFilePath();
+    public String saveOrUpdate(UploadImageRequest request) {
+        MultipartFile imageFile = request.getImageFile();
+        String filePath = request.getFilePath();
         try {
             BufferedImage uploadedImage = ImageIO.read(imageFile.getInputStream());
             File outputFile = new File(String.format(filePathFullFormat, filePath));

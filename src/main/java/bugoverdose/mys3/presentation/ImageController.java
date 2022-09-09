@@ -6,7 +6,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import bugoverdose.mys3.common.WebpConstants;
 import bugoverdose.mys3.presentation.dto.UploadImageResponse;
 import bugoverdose.mys3.service.ImageService;
-import bugoverdose.mys3.service.dto.UploadImageRequestDto;
+import bugoverdose.mys3.service.dto.UploadImageRequest;
 import java.io.InputStream;
 import java.net.URI;
 import org.springframework.core.io.InputStreamResource;
@@ -41,7 +41,7 @@ public class ImageController {
     public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
                                                            @RequestParam(defaultValue = "") String fileName,
                                                            @ModelAttribute MultipartFile imageFile) {
-        String imagePath = imageService.saveOrUpdate(new UploadImageRequestDto(uploadPath, fileName, imageFile));
+        String imagePath = imageService.saveOrUpdate(new UploadImageRequest(uploadPath, fileName, imageFile));
         return ResponseEntity.created(URI.create("/images/" + imagePath))
                 .body(new UploadImageResponse(imagePath));
     }
