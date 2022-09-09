@@ -1,9 +1,9 @@
-package bugoverdose.mys3.api;
+package bugoverdose.mys3.presentation;
 
 import static bugoverdose.mys3.common.StringFormatUtils.toCombinedPath;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
-import bugoverdose.mys3.api.dto.UploadImageResponse;
+import bugoverdose.mys3.presentation.dto.UploadImageResponse;
 import bugoverdose.mys3.service.AuthService;
 import bugoverdose.mys3.service.ImageService;
 import bugoverdose.mys3.service.dto.UploadImageRequestDto;
