@@ -2,7 +2,7 @@ package bugoverdose.mys3.service;
 
 import bugoverdose.mys3.exception.InternalServerError;
 import bugoverdose.mys3.exception.NotFoundException;
-import bugoverdose.mys3.service.dto.UploadImageCommand;
+import bugoverdose.mys3.service.dto.UploadImageRequestDto;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,10 +33,10 @@ public class ImageService {
         }
     }
 
-    public String saveOrUpdate(UploadImageCommand command) {
-        MultipartFile uploadedImageFile = command.getUploadedImageFile();
-        String uploadPath = command.getUploadPath();
-        String fileName = command.getFileName();
+    public String saveOrUpdate(UploadImageRequestDto requestDto) {
+        MultipartFile uploadedImageFile = requestDto.getUploadedImageFile();
+        String uploadPath = requestDto.getUploadPath();
+        String fileName = requestDto.getFileName();
         try {
             BufferedImage uploadedImage = ImageIO.read(uploadedImageFile.getInputStream());
             File outputFile = new File(String.format(filePathFullFormat, uploadPath, fileName));

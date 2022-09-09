@@ -1,25 +1,22 @@
 package bugoverdose.mys3.service.dto;
 
+import static bugoverdose.mys3.common.StringFormatUtils.lowerCaseAndStrip;
+
 import bugoverdose.mys3.exception.InvalidRequestException;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-@NoArgsConstructor
 @Getter
-public class UploadImageCommand {
+public class UploadImageRequestDto {
 
-    private String uploadPath;
-    private String fileName;
-    private MultipartFile uploadedImageFile;
+    private final String uploadPath;
+    private final String fileName;
+    private final MultipartFile uploadedImageFile;
 
-    public UploadImageCommand(String uploadPath, String fileName, MultipartFile uploadedImageFile) {
+    public UploadImageRequestDto(String uploadPath, String fileName, MultipartFile uploadedImageFile) {
         validateImageFile(uploadedImageFile);
-        if (fileName.isBlank()) {
-            fileName = uploadedImageFile.getOriginalFilename();
-        }
-        this.uploadPath = uploadPath.strip().toLowerCase();
-        this.fileName = fileName.strip().toLowerCase();
+        this.uploadPath = lowerCaseAndStrip(uploadPath);
+        this.fileName = toValidFileName(fileName, uploadedImageFile);
         this.uploadedImageFile = uploadedImageFile;
     }
 
@@ -31,5 +28,12 @@ public class UploadImageCommand {
         if (contentType == null || !contentType.startsWith("image")) {
             throw new InvalidRequestException("이미지 파일만 업로드 가능합니다.");
         }
+    }
+
+    private String toValidFileName(String fileName, MultipartFile uploadedImageFile) {
+        if (fileName.isBlank()) {
+            fileName = uploadedImageFile.getOriginalFilename();
+        }
+        return lowerCaseAndStrip(fileName);
     }
 }

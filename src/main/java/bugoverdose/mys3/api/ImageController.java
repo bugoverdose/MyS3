@@ -5,7 +5,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import bugoverdose.mys3.api.dto.UploadImageResponse;
 import bugoverdose.mys3.service.AuthService;
 import bugoverdose.mys3.service.ImageService;
-import bugoverdose.mys3.service.dto.UploadImageCommand;
+import bugoverdose.mys3.service.dto.UploadImageRequestDto;
 import java.io.InputStream;
 import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class ImageController {
                                                            @ModelAttribute MultipartFile image,
                                                            HttpServletRequest request) {
         authService.validate(request.getHeader(AUTHORIZATION));
-        String imagePath = imageService.saveOrUpdate(new UploadImageCommand(uploadPath, fileName, image));
+        String imagePath = imageService.saveOrUpdate(new UploadImageRequestDto(uploadPath, fileName, image));
         return ResponseEntity.created(URI.create("/api/images/" + imagePath))
                 .body(new UploadImageResponse(imagePath));
     }
