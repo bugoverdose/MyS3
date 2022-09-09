@@ -3,7 +3,6 @@ package bugoverdose.mys3.service.dto;
 import bugoverdose.mys3.exception.InvalidRequestException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
@@ -31,9 +30,6 @@ public class UploadImageCommand {
         String contentType = uploadedImageFile.getContentType();
         if (contentType == null || !contentType.startsWith("image")) {
             throw new InvalidRequestException("이미지 파일만 업로드 가능합니다.");
-        }
-        if (contentType.equals(MediaType.IMAGE_GIF_VALUE)) {
-            throw new InvalidRequestException("GIF 파일은 업로드할 수 없습니다.");
         }
     }
 }
