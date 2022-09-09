@@ -37,18 +37,18 @@ public class FileRepository {
     }
 
     public void save(String filePath, MultipartFile imageFile) {
-        try {
-            final var uploadedImage = ImageIO.read(imageFile.getInputStream());
+        try (final var inputStream = imageFile.getInputStream()) {
+            final var bufferedImage = ImageIO.read(inputStream);
             final var outputFile = new File(String.format(filePathFormat, filePath));
             createParentDirectoryIfNew(outputFile);
-            ImageIO.write(uploadedImage, WebpConstants.EXTENSION, outputFile);
+            ImageIO.write(bufferedImage, WebpConstants.EXTENSION, outputFile);
         } catch (IOException e) {
             throw InternalServerError.ofFileSaveFailure();
         }
     }
 
     private void createParentDirectoryIfNew(File file) {
-        File parentFile = file.getParentFile();
+        final var parentFile = file.getParentFile();
         if (parentFile.exists()) {
             return;
         }
