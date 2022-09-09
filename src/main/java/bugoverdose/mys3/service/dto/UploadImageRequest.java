@@ -1,7 +1,6 @@
 package bugoverdose.mys3.service.dto;
 
-import static bugoverdose.mys3.common.StringFormatUtils.toCombinedPath;
-
+import bugoverdose.mys3.common.StringFormatUtils;
 import bugoverdose.mys3.exception.InvalidRequestException;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +14,7 @@ public class UploadImageRequest {
     public UploadImageRequest(String uploadPath, String fileName, MultipartFile imageFile) {
         validateImageFile(imageFile);
         fileName = toValidFileName(fileName, imageFile);
-        this.filePath = toCombinedPath(uploadPath, fileName);
+        this.filePath = StringFormatUtils.toCombinedPath(uploadPath, fileName);
         this.imageFile = imageFile;
     }
 
@@ -29,10 +28,10 @@ public class UploadImageRequest {
         }
     }
 
-    private String toValidFileName(String fileName, MultipartFile uploadedImageFile) {
+    private String toValidFileName(String fileName, MultipartFile imageFile) {
         if (fileName.isBlank()) {
-            fileName = uploadedImageFile.getOriginalFilename();
+            fileName = imageFile.getOriginalFilename();
         }
-        return fileName;
+        return StringFormatUtils.removeFileExtension(fileName);
     }
 }

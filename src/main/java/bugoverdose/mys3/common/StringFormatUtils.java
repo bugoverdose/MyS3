@@ -14,4 +14,11 @@ public class StringFormatUtils {
                 .map(String::toLowerCase)
                 .collect(Collectors.joining("/"));
     }
+
+    public static String removeFileExtension(String fileName) {
+        if (fileName.contains(".")) {
+            return fileName.substring(0, fileName.lastIndexOf('.'));
+        }
+        return fileName;
+    }
 }
