@@ -3,8 +3,12 @@ spring.servlet:
     max-file-size: 30MB
     max-request-size: 30MB
 
+server.compression:
+  enabled: true
+
 image.storage:
   root-directory: static/images
+
 security:
   authorization-key: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
