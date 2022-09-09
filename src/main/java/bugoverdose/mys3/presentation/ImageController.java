@@ -5,12 +5,10 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 import bugoverdose.mys3.common.WebpConstants;
 import bugoverdose.mys3.presentation.dto.UploadImageResponse;
-import bugoverdose.mys3.service.AuthService;
 import bugoverdose.mys3.service.ImageService;
 import bugoverdose.mys3.service.dto.UploadImageRequestDto;
 import java.io.InputStream;
 import java.net.URI;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,15 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class ImageController {
 
-    private static final String AUTHORIZATION = "Authorization";
-
     private final ImageService imageService;
-    private final AuthService authService;
 
-    public ImageController(ImageService imageService,
-                           AuthService authService) {
+    public ImageController(ImageService imageService) {
         this.imageService = imageService;
-        this.authService = authService;
     }
 
     @GetMapping("/images/{uploadPath}/{fileName}")
@@ -47,9 +40,7 @@ public class ImageController {
     @PostMapping("/api/images/{uploadPath}")
     public ResponseEntity<UploadImageResponse> uploadImage(@PathVariable String uploadPath,
                                                            @RequestParam(defaultValue = "") String fileName,
-                                                           @ModelAttribute MultipartFile imageFile,
-                                                           HttpServletRequest request) {
-        authService.validate(request.getHeader(AUTHORIZATION));
+                                                           @ModelAttribute MultipartFile imageFile) {
         String imagePath = imageService.saveOrUpdate(new UploadImageRequestDto(uploadPath, fileName, imageFile));
         return ResponseEntity.created(URI.create("/images/" + imagePath))
                 .body(new UploadImageResponse(imagePath));
