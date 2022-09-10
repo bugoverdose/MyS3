@@ -6,6 +6,7 @@ public class WebpConstants {
     }
 
     public static String EXTENSION = "webp";
+    public static String FILE_EXTENSION_FORMAT = ".webp";
     public static String FILE_FORMAT = "%s.webp";
     public static String MEDIA_TYPE = "image/webp";
 }

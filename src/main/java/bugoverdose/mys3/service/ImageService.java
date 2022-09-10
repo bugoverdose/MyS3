@@ -1,5 +1,7 @@
 package bugoverdose.mys3.service;
 
+import bugoverdose.mys3.common.StringFormatUtils;
+import bugoverdose.mys3.common.WebpConstants;
 import bugoverdose.mys3.repository.FileRepository;
 import bugoverdose.mys3.service.dto.UploadImageRequest;
 import java.io.File;
@@ -15,6 +17,9 @@ public class ImageService {
     }
 
     public File find(String filePath) {
+        if (filePath.endsWith(WebpConstants.FILE_EXTENSION_FORMAT)) {
+            filePath = StringFormatUtils.removeFileExtension(filePath);
+        }
         return fileRepository.find(filePath);
     }
 
